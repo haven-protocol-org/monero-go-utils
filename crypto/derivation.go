@@ -12,7 +12,7 @@ func derivationToScalar(derivation []byte, outputIndex uint64) *[32]byte {
 	return s
 }
 
-func derivePublicKey(derivation []byte, outputIndex uint64, public *[32]byte) (derivedKey *[32]byte, err error) {
+func DerivePublicKey(derivation []byte, outputIndex uint64, public *[32]byte) (derivedKey *[32]byte, err error) {
 	var (
 		point1 geP3
 		point2 geP3

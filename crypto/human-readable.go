@@ -37,7 +37,7 @@ func newECScalar() *[32]byte {
 	return s
 }
 
-func generateKeyDerivation(pub, sec *[32]byte) (*[32]byte, error) {
+func GenerateKeyDerivation(pub, sec *[32]byte) (*[32]byte, error) {
 	var (
 		point  geP3
 		point2 geP2
