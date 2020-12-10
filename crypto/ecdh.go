@@ -24,17 +24,17 @@ func genCommitmentMask(sharedSecret []byte) [32]byte {
 	return result
 }
 
-func xor8(keyV *[]byte, keyK []byte) {
+func xor8(keyV [32]byte, keyK [32]byte) {
 	for ind := 0; ind < 8; ind++ {
 		keyV[ind] ^= keyK[ind]
 	}
 }
 
-func EcdhDecode(ecdhInfo map[string]string, sharedSecret []byte) ecdh_tuple {
+func EcdhDecode(ecdhInfo map[string][]byte, sharedSecret []byte) ecdh_tuple {
 	var ecdh_info ecdh_tuple
 	ecdh_info.mask = genCommitmentMask(sharedSecret)
-	ecdh_info.amount = [32]byte(ecdhInfo["amount"])
-	xor8(&ecdh_info.amount, ecdhHash(sharedSecret))
+	copy(ecdh_info.amount[0:32], ecdhInfo["amount"][:])
+	xor8(ecdh_info.amount, ecdhHash(sharedSecret))
 	return ecdh_info
 }
 
