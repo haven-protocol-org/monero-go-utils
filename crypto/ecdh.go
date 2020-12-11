@@ -1,24 +1,22 @@
 // nolint:errcheck
 package crypto
 
-type ecdh_tuple struct {
-     mask [32]byte
-     amount [32]byte
+type ecdhTuple struct {
+	mask   [32]byte
+	amount [32]byte
 }
 
-func ecdhHash(sharedSecret []byte) [32]byte {
-	var data []byte
-	data = []byte("amount")
-	data = append(data, sharedSecret...)
+func ecdhHash(sharedSecret [32]byte) [32]byte {
+	data := []byte("amount")
+	data = append(data, sharedSecret[:]...)
 	var result [32]byte
 	hashToScalar(&result, data)
 	return result
 }
 
-func genCommitmentMask(sharedSecret []byte) [32]byte {
-	var data []byte
-	data = []byte("commitment_mask")
-	data = append(data, sharedSecret...)
+func genCommitmentMask(sharedSecret [32]byte) [32]byte {
+	data := []byte("commitment_mask")
+	data = append(data, sharedSecret[:]...)
 	var result [32]byte
 	hashToScalar(&result, data)
 	return result
@@ -30,11 +28,12 @@ func xor8(keyV [32]byte, keyK [32]byte) {
 	}
 }
 
-func EcdhDecode(ecdhInfo map[string][]byte, sharedSecret []byte) ecdh_tuple {
-	var ecdh_info ecdh_tuple
-	ecdh_info.mask = genCommitmentMask(sharedSecret)
-	copy(ecdh_info.amount[0:32], ecdhInfo["amount"][:])
-	xor8(ecdh_info.amount, ecdhHash(sharedSecret))
-	return ecdh_info
+func EcdhDecode(ecdhInfo map[string][]byte, sharedSecret [32]byte) ecdhTuple {
+	var ecdhTuple ecdhTuple
+	// get the mask key
+	ecdhTuple.mask = genCommitmentMask(sharedSecret)
+	// get the amount key
+	copy(ecdhTuple.amount[:], ecdhInfo["amount"])
+	xor8(ecdhTuple.amount, ecdhHash(sharedSecret))
+	return ecdhTuple
 }
-
