@@ -6,15 +6,26 @@ var H = [32]byte{0x8b, 0x65, 0x59, 0x70, 0x15, 0x37, 0x99, 0xaf, 0x2a, 0xea, 0xd
 //addKeys2
 //aGbB = aG + bB where a, b are scalars, G is the basepoint and B is a point
 func AddKeys2(aGbB *[32]byte, a [32]byte, b [32]byte, B [32]byte) bool {
-  var rv geP2
-  var B2 geP3
-  //CHECK_AND_ASSERT_THROW_MES_L1(ge_frombytes_vartime(&B2, B.bytes) == 0, "ge_frombytes_vartime failed at "+boost::lexical_cast<std::string>(__LINE__));
-  if !geFromBytesVarTime(&B2, B[:]) {
-    return false
-  }
+	var rv geP2
+	var B2 geP3
+	//CHECK_AND_ASSERT_THROW_MES_L1(ge_frombytes_vartime(&B2, B.bytes) == 0, "ge_frombytes_vartime failed at "+boost::lexical_cast<std::string>(__LINE__));
+	if !geFromBytesVarTime(&B2, B[:]) {
+		return false
+	}
 
-  geDoubleScalarMultBaseVarTime(&rv, &b, &B2, &a)
-  geToBytes(aGbB, &rv)
-  return true
+	geDoubleScalarMultBaseVarTime(&rv, &b, &B2, &a)
+	geToBytes(aGbB, &rv)
+	return true
 }
-							
+
+//checks if A, B are equal in terms of bytes (may say no if one is a non-reduced scalar)
+//without doing curve operations
+func EqualKeys(a [32]byte, b [32]byte) bool {
+	rv := true
+	for i := 0; i < 32; i++ {
+		if a[i] != b[i] {
+			rv = false
+		}
+	}
+	return rv
+}
