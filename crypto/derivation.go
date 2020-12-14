@@ -2,7 +2,7 @@ package crypto
 
 import "encoding/binary"
 
-func derivationToScalar(derivation []byte, outputIndex uint64) *[32]byte {
+func DerivationToScalar(derivation []byte, outputIndex uint64) *[32]byte {
 	buf := make([]byte, 40)
 	copy(buf, derivation[:])
 	n := binary.PutUvarint(buf[32:], outputIndex)
@@ -24,7 +24,7 @@ func DerivePublicKey(derivation []byte, outputIndex uint64, public *[32]byte) (d
 		return nil, InvalidPublicKey
 	}
 
-	scalar := derivationToScalar(derivation, outputIndex)
+	scalar := DerivationToScalar(derivation, outputIndex)
 	geScalarMultBase(&point2, scalar)
 	geP3ToCached(&point3, &point2)
 	geAdd(&point4, &point1, &point3)
@@ -43,7 +43,7 @@ func deriveSecretKey(derivation []byte, outputIndex uint64, secret *[32]byte) (d
 
 	derivedKey = new([32]byte)
 
-	scalar := derivationToScalar(derivation, outputIndex)
+	scalar := DerivationToScalar(derivation, outputIndex)
 	scAdd(derivedKey, secret, scalar)
 	return derivedKey, nil
 }
