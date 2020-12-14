@@ -2,7 +2,7 @@
 package crypto
 
 import (
-       "encoding/hex"
+	"encoding/hex"
 )
 
 type EcdhTuple struct {
@@ -29,14 +29,14 @@ func genCommitmentMask(sharedSecret [32]byte) [32]byte {
 }
 
 func xor8(keyV *[32]byte, keyK [32]byte) {
-     	for ind := 0; ind < 8; ind++ {
+	for ind := 0; ind < 8; ind++ {
 		keyV[ind] ^= keyK[ind]
 	}
 }
 
 func EcdhDecode(ecdhInfo map[string]string, sharedSecret [32]byte) EcdhTuple {
-        amount, _ := hex.DecodeString(ecdhInfo["amount"])
-        var ecdhTuple EcdhTuple
+	amount, _ := hex.DecodeString(ecdhInfo["amount"])
+	var ecdhTuple EcdhTuple
 	// get the mask key
 	ecdhTuple.Mask = genCommitmentMask(sharedSecret)
 	// get the amount key
@@ -46,12 +46,26 @@ func EcdhDecode(ecdhInfo map[string]string, sharedSecret [32]byte) EcdhTuple {
 }
 
 func H2d(key [32]byte) uint64 {
-        var val uint64 = 0
+	var val uint64 = 0
 	var j int = 0
 	for j = 7; j >= 0; j-- {
-	  val = (val << 8) + uint64(key[j])
+		val = (val << 8) + uint64(key[j])
 	}
 	return val
 }
 
-							    
+//addKeys2
+//aGbB = aG + bB where a, b are scalars, G is the basepoint and B is a point
+func addKeys2(aGbB *[32]byte, a [32]byte, b [32]byte, B [32]byte) bool {
+	var rv geP2
+	var B2 geP3
+
+	//CHECK_AND_ASSERT_THROW_MES_L1(ge_frombytes_vartime(&B2, B.bytes) == 0, "ge_frombytes_vartime failed at "+boost::lexical_cast<std::string>(__LINE__));
+	if !geFromBytesVarTime(&B2, B[:]) {
+		return false
+	}
+
+	geDoubleScalarMultBaseVarTime(&rv, &b, &B2, &a)
+	geToBytes(aGbB, &rv)
+	return true
+}
