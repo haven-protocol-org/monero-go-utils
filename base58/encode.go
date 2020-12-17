@@ -5,7 +5,7 @@ import (
 	"encoding/binary"
 	"io"
 
-	"github.com/ehmry/monero/crypto"
+	moneroCrypto "github.com/haven-protocol-org/monero-go-utils/crypto"
 )
 
 func encodeBlock(dst, src []byte) {
@@ -71,10 +71,10 @@ func uint8beTo64(b []byte) (r uint64) {
 	return r
 }
 
-func encodeAddr(tag uint64, data []byte) string {
+func EncodeAddr(tag uint64, data []byte) string {
 	var buf bytes.Buffer
 	enc := NewEncoder(&buf)
-	hash := crypto.NewHash()
+	hash := moneroCrypto.NewHash()
 	mw := io.MultiWriter(enc, hash)
 
 	//binary.Write(mw, binary.LittleEndian, tag)

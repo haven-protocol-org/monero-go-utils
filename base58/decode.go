@@ -7,7 +7,7 @@ import (
 	"io"
 	"math/big"
 
-	"github.com/ehmry/monero/crypto"
+	moneroCrypto "github.com/haven-protocol-org/monero-go-utils/crypto"
 )
 
 func decodeBlock(dst, src []byte) (int, error) {
@@ -47,7 +47,7 @@ func decodeAddr(s string) (tag uint64, data []byte) {
 
 	checksum := b[len(b)-checksumSize:]
 	b = b[:len(b)-checksumSize]
-	hash := crypto.NewHash()
+	hash := moneroCrypto.NewHash()
 	hash.Write(b)
 	digest := hash.Sum(nil)
 	if !bytes.Equal(checksum, digest[:checksumSize]) {
