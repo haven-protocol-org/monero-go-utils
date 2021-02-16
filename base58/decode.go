@@ -35,7 +35,7 @@ func decodeBlock(dst, src []byte) (int, error) {
 	return l, nil
 }
 
-func decodeAddr(s string) (tag uint64, data []byte) {
+func DecodeAddr(s string) (tag uint64, data []byte) {
 	b, err := DecodeString(s)
 	if err != nil {
 		return
