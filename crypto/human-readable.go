@@ -60,7 +60,7 @@ func GenerateKeyDerivation(pub, sec *[32]byte) (*[32]byte, error) {
 	return d, nil
 }
 
-func hashToPoint(h []byte) *[32]byte {
+func HashToPoint(h []byte) *[32]byte {
 	point := geFromFeFromBytesVarTime(h)
 	b := new([32]byte)
 	geToBytes(b, point)
