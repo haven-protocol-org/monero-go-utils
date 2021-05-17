@@ -1,6 +1,6 @@
 package crypto
 
-func hashToScalar(s *[32]byte, b []byte) {
+func HashToScalar(s *[32]byte, b []byte) {
 	h := NewHash()
 	h.Write(b)
 	digest := make([]byte, 64)
