@@ -51,7 +51,7 @@ func genCommitmentMask(sharedSecret [32]byte) [32]byte {
 	data := []byte("commitment_mask")
 	data = append(data, sharedSecret[:]...)
 	var result [32]byte
-	hashToScalar(&result, data)
+	HashToScalar(&result, data)
 	return result
 }
 

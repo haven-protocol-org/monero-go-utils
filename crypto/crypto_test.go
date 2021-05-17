@@ -80,7 +80,7 @@ func TestHashToScalar(t *testing.T) {
 	var s [32]byte
 	for i, args := range lines {
 		in, _ := hex.DecodeString(args[0])
-		hashToScalar(&s, in)
+		HashToScalar(&s, in)
 		out, _ := hex.DecodeString(args[1])
 
 		if !bytes.Equal(s[:], out) {

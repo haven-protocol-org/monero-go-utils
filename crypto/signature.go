@@ -57,7 +57,7 @@ func checkSignature(prefixHash []byte, pub *[32]byte, sig []byte) bool {
 	var b [32]byte
 	geToBytes(&b, &tmp2)
 	copy(buf[64:], b[:])
-	hashToScalar(&c, buf)
+	HashToScalar(&c, buf)
 	scSub(&c, &c, &sigC)
 	return !scIsNonZero(&c)
 }
@@ -141,7 +141,7 @@ func checkRingSignature(prefixHash, image []byte, pubs []*[32]byte, sig []byte) 
 		scAdd(&sum, &sum, &sigs[i].c)
 	}
 
-	hashToScalar(&h, buf)
+	HashToScalar(&h, buf)
 	scSub(&h, &h, &sum)
 	return !scIsNonZero(&h)
 }

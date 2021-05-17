@@ -8,7 +8,7 @@ func DerivationToScalar(derivation []byte, outputIndex uint64) *[32]byte {
 	n := binary.PutUvarint(buf[32:], outputIndex)
 
 	s := new([32]byte)
-	hashToScalar(s, buf[:32+n])
+	HashToScalar(s, buf[:32+n])
 	return s
 }
 
